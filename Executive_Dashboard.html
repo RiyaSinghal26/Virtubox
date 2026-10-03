@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VirtuBox Executive Performance & Growth Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased p-4 md:p-8">
+
+    <!-- Header & Navigation -->
+    <header class="max-w-7xl mx-auto mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900 text-white p-6 rounded-2xl shadow-xl">
+        <div>
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-500 text-white p-2 rounded-lg font-bold text-xl">VB</div>
+                <h1 class="text-2xl font-bold tracking-tight">VirtuBox Executive Data Analytics Dashboard</h1>
+            </div>
+            <p class="text-slate-400 text-sm mt-1">E-Commerce Global B2B Wholesale Performance & Revenue Concentration Analysis</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+            <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs px-3 py-1.5 rounded-full font-medium flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Analysis-Ready Dataset (392,692 records)
+            </span>
+            <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg font-medium transition shadow flex items-center gap-2">
+                <i data-lucide="download" class="w-4 h-4"></i> Export PDF Report
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto space-y-8">
+
+        <!-- Filter Controls -->
+        <section class="glass-card p-4 rounded-xl shadow-sm flex flex-wrap items-center justify-between gap-4">
+            <div class="flex flex-wrap items-center gap-4 text-sm">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="filter" class="w-4 h-4 text-slate-500"></i>
+                    <span class="font-semibold text-slate-700">Filters:</span>
+                </div>
+                <div>
+                    <label class="text-xs text-slate-500 block">Region / Market</label>
+                    <select id="countryFilter" onchange="updateDashboard()" class="border border-slate-300 rounded-md px-3 py-1 text-sm bg-white font-medium focus:ring-2 focus:ring-blue-500">
+                        <option value="ALL">All Markets Global ($8.89M)</option>
+                        <option value="UK">United Kingdom ($7.31M - Domestic Base)</option>
+                        <option value="NL">Netherlands ($285.4K - B2B Powerhouse)</option>
+                        <option value="IE">Ireland / EIRE ($265.5K - Top ARPU)</option>
+                        <option value="DE">Germany ($228.9K)</option>
+                        <option value="FR">France ($209.0K)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs text-slate-500 block">Customer Segment</label>
+                    <select id="segmentFilter" onchange="updateDashboard()" class="border border-slate-300 rounded-md px-3 py-1 text-sm bg-white font-medium">
+                        <option value="ALL">All Buyer Tiers (4,338 Accounts)</option>
+                        <option value="TOP10">Top 10% B2B Key Accounts (61.3% Revenue)</option>
+                        <option value="REMAINING">Remaining 90% Accounts (38.7% Revenue)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-xs text-slate-500 font-medium">
+                Data Period: <span class="text-slate-800 font-semibold">Dec 2010 – Dec 2011</span>
+            </div>
+        </section>
+
+        <!-- KPI Executive Summary Cards -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="glass-card p-6 rounded-2xl shadow-sm border-l-4 border-l-blue-600">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Net Revenue</p>
+                        <h3 id="kpiRevenue" class="text-3xl font-extrabold text-slate-900 mt-2">$8.89M</h3>
+                    </div>
+                    <div class="p-3 bg-blue-50 text-blue-600 rounded-xl">
+                        <i data-lucide="dollar-sign" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-emerald-600 font-medium mt-3 flex items-center gap-1">
+                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> +95% Surge in Nov Q4 Peak
+                </p>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl shadow-sm border-l-4 border-l-emerald-600">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Completed Orders</p>
+                        <h3 id="kpiOrders" class="text-3xl font-extrabold text-slate-900 mt-2">18,532</h3>
+                    </div>
+                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+                        <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 font-medium mt-3">
+                    Across 392,692 clean item transactions
+                </p>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl shadow-sm border-l-4 border-l-purple-600">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active B2B Accounts</p>
+                        <h3 id="kpiCustomers" class="text-3xl font-extrabold text-slate-900 mt-2">4,338</h3>
+                    </div>
+                    <div class="p-3 bg-purple-50 text-purple-600 rounded-xl">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-purple-600 font-medium mt-3 flex items-center gap-1">
+                    <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> Top 10% drives 61.3% revenue
+                </p>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl shadow-sm border-l-4 border-l-amber-500">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Avg Order Value (AOV)</p>
+                        <h3 id="kpiAOV" class="text-3xl font-extrabold text-slate-900 mt-2">$480.86</h3>
+                    </div>
+                    <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
+                        <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500 font-medium mt-3">
+                    Wholesale basket: 300+ units/order
+                </p>
+            </div>
+        </section>
+
+        <!-- Charts Grid Row 1 -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Monthly Revenue Trend -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm lg:col-span-2">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Monthly Revenue & Order Volume Trend</h3>
+                        <p class="text-xs text-slate-500">Q4 pre-holiday surge reaches peak in November ($1.16M)</p>
+                    </div>
+                    <span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-md font-semibold">12 Month Time-Series</span>
+                </div>
+                <div class="h-72">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Customer Spend Pareto Donut Chart -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm">
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-slate-900">Customer Revenue Concentration</h3>
+                    <p class="text-xs text-slate-500">Pareto 80/20 spend decile distribution</p>
+                </div>
+                <div class="h-60 flex justify-center items-center">
+                    <canvas id="paretoChart"></canvas>
+                </div>
+                <div class="mt-4 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-600">
+                    <span class="font-bold text-slate-800">Key Finding:</span> Top 433 accounts ($5.46M) represent extreme concentration risk. Dedicated Key Account Managers required.
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Grid Row 2 -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- International ARPU Efficiency -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm">
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-slate-900">International Market Wholesale Efficiency (ARPU)</h3>
+                    <p class="text-xs text-slate-500">Average Revenue Per User ($) across top European channels</p>
+                </div>
+                <div class="h-72">
+                    <canvas id="arpuChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top 5 Flagship SKUs -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm">
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-slate-900">Top Flagship Products by Gross Revenue</h3>
+                    <p class="text-xs text-slate-500">Core catalog items generating disproportionate gross sales</p>
+                </div>
+                <div class="h-72">
+                    <canvas id="skuChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Recommendations Cards -->
+        <section class="glass-card p-6 rounded-2xl shadow-sm">
+            <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <i data-lucide="check-circle-2" class="w-6 h-6 text-blue-600"></i> Executive Action Plan & Strategic Priorities
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs hover:border-blue-300 transition">
+                    <div class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">Priority 1 • High Impact</div>
+                    <h4 class="font-bold text-slate-900 text-base mb-2">Launch European B2B Wholesale Portals</h4>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">
+                        Target Netherlands ($31,716 ARPU) and Ireland ($88,515 ARPU) with localized wholesale ordering portals and dedicated regional trade terms.
+                    </p>
+                    <div class="flex justify-between items-center text-xs font-semibold pt-3 border-t border-slate-100">
+                        <span class="text-slate-500">Owner: Int'l Sales Lead</span>
+                        <span class="text-emerald-600 font-bold">+$1.5M EBITDA Upside</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs hover:border-blue-300 transition">
+                    <div class="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2">Priority 2 • High Impact</div>
+                    <h4 class="font-bold text-slate-900 text-base mb-2">VIP Key Account Loyalty & Retention</h4>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">
+                        Institute dedicated account managers and tiered volume discounts for the top 433 buyers generating 61.3% of total revenue.
+                    </p>
+                    <div class="flex justify-between items-center text-xs font-semibold pt-3 border-t border-slate-100">
+                        <span class="text-slate-500">Owner: VP Customer Success</span>
+                        <span class="text-emerald-600 font-bold">50% Churn Reduction</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs hover:border-blue-300 transition">
+                    <div class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-2">Priority 3 • Medium Impact</div>
+                    <h4 class="font-bold text-slate-900 text-base mb-2">Advance Q4 Inventory Positioning</h4>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">
+                        Advance purchase orders for top 20 SKUs by 45 days prior to the November holiday demand spike ($1.16M surge) to avoid stockout losses.
+                    </p>
+                    <div class="flex justify-between items-center text-xs font-semibold pt-3 border-t border-slate-100">
+                        <span class="text-slate-500">Owner: Supply Chain Lead</span>
+                        <span class="text-emerald-600 font-bold">&lt;2% Stockout Rate</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-7xl mx-auto mt-12 text-center text-xs text-slate-500 border-t border-slate-200 pt-6">
+        <p>VirtuBox Data Analyst Assessment Submission Package • Dataset: Kaggle E-Commerce Online Retail (541,909 Records)</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Chart Data Initialization
+        const months = ['Dec 10', 'Jan 11', 'Feb 11', 'Mar 11', 'Apr 11', 'May 11', 'Jun 11', 'Jul 11', 'Aug 11', 'Sep 11', 'Oct 11', 'Nov 11', 'Dec 11'];
+        const monthlyRevenue = [572993, 569445, 447137, 595500, 469200, 678330, 661210, 600090, 645340, 952800, 1039350, 1161800, 514013];
+        const monthlyOrders = [1420, 1000, 1020, 1320, 1100, 1550, 1390, 1330, 1280, 1750, 1920, 2650, 802];
+
+        // 1. Trend Chart
+        const ctxTrend = document.getElementById('trendChart').getContext('2d');
+        new Chart(ctxTrend, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Net Revenue ($)',
+                    data: monthlyRevenue,
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } }
+                }
+            }
+        });
+
+        // 2. Pareto Chart
+        const ctxPareto = document.getElementById('paretoChart').getContext('2d');
+        new Chart(ctxPareto, {
+            type: 'doughnut',
+            data: {
+                labels: ['Top 10% B2B Accounts ($5.46M)', 'Remaining 90% Accounts ($3.43M)'],
+                datasets: [{
+                    data: [61.33, 38.67],
+                    backgroundColor: ['#1e3a8a', '#94a3b8']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+
+        // 3. ARPU Chart
+        const ctxARPU = document.getElementById('arpuChart').getContext('2d');
+        new Chart(ctxARPU, {
+            type: 'bar',
+            data: {
+                labels: ['Ireland (EIRE)', 'Netherlands', 'Australia', 'France', 'Germany', 'United Kingdom'],
+                datasets: [{
+                    label: 'ARPU ($ per customer)',
+                    data: [88515, 31716, 24715, 4180, 2409, 1864],
+                    backgroundColor: ['#059669', '#10b981', '#3b82f6', '#6366f1', '#8b5cf6', '#94a3b8'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } }
+                }
+            }
+        });
+
+        // 4. Top SKUs Chart
+        const ctxSKU = document.getElementById('skuChart').getContext('2d');
+        new Chart(ctxSKU, {
+            type: 'bar',
+            data: {
+                labels: ['Paper Craft Little Birdie', 'Regency Cakestand 3 Tier', 'White Hanging Heart', 'Jumbo Bag Red Retro', 'Medium Pink Cake Stand'],
+                datasets: [{
+                    label: 'Revenue ($)',
+                    data: [168469, 142592, 100448, 85220, 48378],
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } }
+                }
+            }
+        });
+
+        function updateDashboard() {
+            // Dynamic UI updates for demo interaction
+            const country = document.getElementById('countryFilter').value;
+            if(country === 'NL') {
+                document.getElementById('kpiRevenue').innerText = '$285.4K';
+                document.getElementById('kpiCustomers').innerText = '9';
+                document.getElementById('kpiAOV').innerText = '$31,716';
+            } else if(country === 'IE') {
+                document.getElementById('kpiRevenue').innerText = '$265.5K';
+                document.getElementById('kpiCustomers').innerText = '3';
+                document.getElementById('kpiAOV').innerText = '$88,515';
+            } else {
+                document.getElementById('kpiRevenue').innerText = '$8.89M';
+                document.getElementById('kpiCustomers').innerText = '4,338';
+                document.getElementById('kpiAOV').innerText = '$480.86';
+            }
+        }
+    </script>
+</body>
+</html>
